@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>NETTY SOCKET.IO DEMO</title>
+    <base>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/socket.io/2.2.0/socket.io.js"></script>
+    <style>
+        body {
+            padding: 20px;
+        }
+        #console {
+            height: 450px;
+            overflow: auto;
+        }
+        .username-msg {
+            color: orange;
+        }
+        .connect-msg {
+            color: green;
+        }
+        .disconnect-msg {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+<h1>netty-socketio</h1>
+<div id="console" class="well"></div>
+
+<input id="msg" type="text" placeholder="发送内容. . . " />
+<input type="button" onclick="sendMsg()" value="sendMsg" />
+</body>
+<script type="text/javascript">
+    var socket;
+    connect();
+
+    function connect() {
+        var loginUserNum = '88';
+        var opts = {
+            path: '/bet',
+            query: 'loginUserNum=' + loginUserNum
+        };
+        socket = io.connect('ws://192.168.1.223:6688', opts);
+        // socket = io.connect('ws://hy.chendahai.cn:6666', opts);
+        socket.on('connect', function () {
+            console.log("连接成功");
+            serverOutput('<span class="connect-msg">连接成功</span>');
+        });
+
+        socket.on('bet_ping', function (data) {
+            output('<span class="username-msg">' + data + ' </span>');
+            console.log(data);
+        });
+
+        socket.on('bet_pong', function (data) {
+            output('<span class="username-msg">' + data + ' </span>');
+            console.log(data);
+        });
+
+        socket.on('disconnect', function () {
+            serverOutput('<span class="disconnect-msg">' + '已下线! </span>');
+        });
+
+
+    }
+
+
+    function sendMsg() {
+        var message = $('#msg').val();
+        console.log("chy:"+message);
+        console.log(socket);
+        socket.emit('bet_ping',message);
+        // socket.emit('bet_ping',message);
+        //socket.emit('game_ping', {
+        //    message : message
+        //});
+    }
+
+
+    function output(message) {
+        var element = $("<div>" + " " + message + "</div>");
+        $('#console').prepend(element);
+    }
+
+    function serverOutput(message) {
+        var element = $("<div>" + message + "</div>");
+        $('#console').prepend(element);
+    }
+</script>
+</html>
