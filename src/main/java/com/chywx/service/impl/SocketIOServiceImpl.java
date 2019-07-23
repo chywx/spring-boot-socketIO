@@ -69,18 +69,18 @@ public class SocketIOServiceImpl implements SocketIOService {
         });
 
         // 处理自定义的事件，与连接监听类似
-        socketIOServer.addEventListener(BET_PING, String.class, (client, data, ackSender) -> {
-            System.out.println(data);
-            client.sendEvent(BET_PONG,"服务端回复："+data);
-        });
+//        socketIOServer.addEventListener(BET_PING, String.class, (client, data, ackSender) -> {
+//            System.out.println(data);
+//            client.sendEvent(BET_PONG,"服务端回复："+data);
+//        });
         socketIOServer.start();
     }
 
-//    @OnEvent(value = "bet_aaa")
-//    public void ping(SocketIOClient client, String info) {
-//        System.out.println(info);
-//        client.sendEvent(BET_PONG,"服务端回复："+info);
-//    }
+    @OnEvent(value = BET_PING)
+    public void ping(SocketIOClient client, String info) {
+        System.out.println(info);
+        client.sendEvent(BET_PONG,"服务端回复："+info);
+    }
 
     @Override
     public void stop() {
