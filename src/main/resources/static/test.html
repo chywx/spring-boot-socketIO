@@ -44,7 +44,7 @@
             query: 'loginUserNum=' + loginUserNum
         };
         // socket = io.connect('http://192.168.1.150:9091', opts);
-        socket = io.connect('ws://192.168.1.223:6688', opts);
+        socket = io.connect('ws://192.168.1.233:6688', opts);
         // socket = io.connect('ws://hy.chendahai.cn:6666', opts);
         socket.on('connect', function () {
             console.log("连接成功");

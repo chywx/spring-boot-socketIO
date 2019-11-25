@@ -60,11 +60,25 @@ public class SocketIOConfig {
         config.setUpgradeTimeout(upgradeTimeout);
         config.setPingTimeout(pingTimeout);
         config.setPingInterval(pingInterval);
+        setSocketConfig(socketConfig, config);
         return new SocketIOServer(config);
     }
 
-    /*
-    添加注解支持
+    /**
+     * 地址服用，这时候再启动不报错
+     * @param socketConfig
+     * @param config
+     */
+    private void setSocketConfig(SocketConfig socketConfig, com.corundumstudio.socketio.Configuration config) {
+        SocketConfig sockConfig = new SocketConfig();
+        sockConfig.setReuseAddress(true);
+        config.setSocketConfig(socketConfig);
+    }
+
+    /**
+     * 添加注解支持
+     * @param socketServer
+     * @return
      */
     @Bean
     public SpringAnnotationScanner springAnnotationScanner(SocketIOServer socketServer) {
